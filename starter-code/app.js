@@ -1,23 +1,43 @@
-var app = angular.module('wineApp', []);
+var app = angular.module('wineApp', [ 'ngRoute' ]);
 
 console.log('Angular is working.');
 
 ////////////
 // ROUTES //
 ////////////
-
+    app.config(function($routeProvider, $locationProvider){
+        $routeProvider
+          .when('/', {
+            templateUrl: 'templates/wines-index.html',
+            controller: 'WinesIndexCtrl'
+          })
+          .when('/wines/:id', { // the "id" parameter 
+            templateUrl: 'templates/wines-show.html',
+            controller: 'WinesShowCtrl'
+          });
+        $locationProvider.html5Mode({
+          enabled: true,
+          requireBase: false
+        });
+    });
 
 /////////////////
 // CONTROLLERS //
 /////////////////
 
-app.controller('WinesIndexCtrl',function($scope){
-  console.log("Wine Index")
-})
+app.controller('WinesIndexCtrl',function($scope, WineService){
+  console.log("Wine Index");
+  $scope.hello = "wine index controller is working!";
+  $scope.wines = WineService.query();
+  console.log($scope.wines);
+});
 
-app.controller('WinesShowCtrl',function($scope){
-  console.log("Wine Show")
-})
+app.controller('WinesShowCtrl',function($scope, WineService, $routeParams){
+  console.log("Wine Show");
+  console.log($routeParams.id);
+  $scope.wine = WineService.get($routeParams.id);
+
+});
 
 ////////////
 // MODELS //
@@ -29,18 +49,18 @@ app.factory('WineService', function(){
 
   WineService.query = function(){
     return ALL_WINES;
-  }
+  };
 
   WineService.get = function(id){
     var id = parseInt(id);
     return ALL_WINES.find(function(wine){
       return wine.id == id;
     });
-  }
+  };
 
   return WineService;
 
-})
+});
 
 
 

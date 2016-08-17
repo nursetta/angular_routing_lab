@@ -1,1 +1,11 @@
-Welcome to Wine Index (templates/wines-index.html)
+<!-- Welcome to Wine Index (templates/wines-index.html) -->
+<h1> Here is a list of Wines  </h1>
+
+<div ng-repeat="wine in wines" >
+<h3><a href="/wines/{{wine.id}}">{{ wine.name + " - " + "$" + wine.price}}</a></h3>
+<h4> {{ wine.year }} </h4>
+<h4> {{ wine.country + " | " + wine.region}} </h4>
+<h5> {{ wine.grapes }} </h5>
+<img src="{{wine.picture}}">
+<p> {{ wine.description }} </p>
+</div>
