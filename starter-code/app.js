@@ -1,4 +1,4 @@
-var app = angular.module('wineApp', [ 'ngRoute' ]);
+var app = angular.module('wineApp', [ 'ngRoute', 'ngResource' ]);
 
 console.log('Angular is working.');
 
@@ -33,44 +33,37 @@ app.controller('WinesIndexCtrl',function($scope, WineService){
 });
 
 app.controller('WinesShowCtrl',function($scope, WineService, $routeParams){
-  console.log("Wine Show");
-  console.log($routeParams.id);
-  $scope.wine = WineService.get($routeParams.id);
-
+  $scope.wine = WineService.get({ id: $routeParams.id });
+  console.log($scope.wine);
 });
 
 ////////////
 // MODELS //
 ////////////
+    app.factory('WineService', function($resource) {
+    return $resource('http://daretoexplore.herokuapp.com/wines/:id');
 
-app.factory('WineService', function(){
-
-  var WineService = {};
-
-  WineService.query = function(){
-    return ALL_WINES;
-  };
-
-  WineService.get = function(id){
-    var id = parseInt(id);
-    return ALL_WINES.find(function(wine){
-      return wine.id == id;
     });
-  };
-
-  return WineService;
-
-});
 
 
+// app.factory('WineService', function(){
 
+//   var WineService = {};
 
+//   WineService.query = function(){
+//     return ALL_WINES;
+//   };
 
+//   WineService.get = function(id){
+//     var id = parseInt(id);
+//     return ALL_WINES.find(function(wine){
+//       return wine.id == id;
+//     });
+//   };
 
+//   return WineService;
 
-
-
-
+// });
 
 /*
  * Temporary Mock JSON
